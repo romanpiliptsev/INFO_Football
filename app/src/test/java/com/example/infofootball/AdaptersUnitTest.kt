@@ -7,6 +7,7 @@ import org.junit.Before
 import org.junit.Test
 
 class AdaptersUnitTest {
+    private var favoritesAdapter: FavoritesAdapter? = null
     private var matchesAdapter: MatchesAdapter? = null
     private var playersAdapter: PlayersAdapter? = null
     private var tableAdapter: TableAdapter? = null
@@ -15,6 +16,10 @@ class AdaptersUnitTest {
 
     @Before
     fun before() {
+        favoritesAdapter = FavoritesAdapter(listOf(
+            DBTeam(1, "1", "1"),
+            DBTeam(2, "2", "2")
+        ))
         matchesAdapter = MatchesAdapter(listOf(Match(1, "", "", "", 1, "", 2, "", "", "", "", 1, "")), null, "1")
         playersAdapter = PlayersAdapter(listOf(Player("", 1, "", 1, 1, 1, 1, 1, "")))
         tableAdapter = TableAdapter(listOf(TableItem(1, 1, "", "", 1, "", 1, 1, 1, 1, 1, 1)))
@@ -22,6 +27,16 @@ class AdaptersUnitTest {
             TopScorer(1, "", 1, "", 1, 1, "", 1),
             TopScorer(2, "", 2, "", 1, 1, "", 1)
         ))
+        videosAdapter = VideosAdapter(listOf(
+            Video(1, "", ""),
+            Video(1, "", ""),
+            Video(1, "", "")
+        ))
+    }
+
+    @Test
+    fun favoritesAdapter_getItemCount_isCorrect() {
+        assertEquals(favoritesAdapter?.itemCount, 2)
     }
 
     @Test
