@@ -11,6 +11,7 @@ class AdaptersUnitTest {
     private var playersAdapter: PlayersAdapter? = null
     private var tableAdapter: TableAdapter? = null
     private var topScorerAdapter: TopScorersAdapter? = null
+    private var videosAdapter: VideosAdapter? = null
 
     @Before
     fun before() {
@@ -41,5 +42,10 @@ class AdaptersUnitTest {
     @Test
     fun topScorerAdapter_getItemCount_isCorrect() {
         assertEquals(topScorerAdapter?.itemCount, 2)
+    }
+
+    @Test
+    fun videosAdapter_getItemCount_isCorrect() {
+        assertEquals(videosAdapter?.itemCount, 3)
     }
 }
