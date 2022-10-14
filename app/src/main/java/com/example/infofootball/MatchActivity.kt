@@ -146,4 +146,13 @@ class MatchActivity : AppCompatActivity() {
     fun showToastHtScore(view: View) {
         Toast.makeText(this, "Halftime score", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.favorites) {
+            startActivity(Intent(this, FavoritesActivity::class.java))
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

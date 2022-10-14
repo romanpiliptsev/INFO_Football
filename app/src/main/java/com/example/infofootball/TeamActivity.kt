@@ -29,11 +29,15 @@ class TeamActivity : AppCompatActivity() {
     private var rvMatches: RecyclerView? = null
     private var rvPlayers: RecyclerView? = null
     private var matches: ArrayList<Match> = ArrayList()
+    private var favoriteTeam: DBTeam? = null
     private var team: Team? = null
+    private var viewModel: MainViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team)
+
+        viewModel = MainViewModel(application)
 
         teamLogo = findViewById(R.id.team_logo)
         teamName = findViewById(R.id.team_name)
@@ -71,6 +75,11 @@ class TeamActivity : AppCompatActivity() {
         rvPlayers?.adapter = PlayersAdapter(team?.players ?: ArrayList())
     }
 
+    override fun onResume() {
+        super.onResume()
+        setFavorite()
+    }
+
     fun launchMatchActivity(view: View) {
         val match: Match = matches[rvMatches?.indexOfChild(view) ?: 0]
 
@@ -82,6 +91,37 @@ class TeamActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.favorites) {
+            startActivity(Intent(this, FavoritesActivity::class.java))
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun addOrDeleteFromFavorites(view: View) {
+        if (favoriteTeam != null) {
+            viewModel?.deleteFavorite(favoriteTeam!!)
+            Toast.makeText(this, "Deleted from favorites", Toast.LENGTH_SHORT).show()
+        } else {
+            if (team != null) {
+                viewModel?.insertFavorite(DBTeam(team!!))
+                Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT).show()
+            }
+        }
+        setFavorite()
+    }
+
+    private fun setFavorite() {
+        favoriteTeam = viewModel?.getFavoriteById(team?.team_key ?: 0)
+        if (favoriteTeam == null) {
+            star?.setImageResource(R.drawable.ic_empty_star)
+        } else {
+            star?.setImageResource(R.drawable.ic_yellow_star)
+        }
     }
 
     fun showToastMatches(view: View) {
