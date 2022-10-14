@@ -22,12 +22,61 @@ import com.squareup.picasso.Picasso
 
 class TeamActivity : AppCompatActivity() {
 
+    private var teamLogo: ImageView? = null
+    private var teamName: TextView? = null
+    private var coach: TextView? = null
+    private var star: ImageView? = null
+    private var rvMatches: RecyclerView? = null
+    private var rvPlayers: RecyclerView? = null
+    private var matches: ArrayList<Match> = ArrayList()
+    private var team: Team? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team)
+
+        teamLogo = findViewById(R.id.team_logo)
+        teamName = findViewById(R.id.team_name)
+        coach = findViewById(R.id.coach)
+        rvMatches = findViewById(R.id.rv_last_matches)
+        rvPlayers = findViewById(R.id.rv_players)
+        star = findViewById(R.id.favorite_or_not)
+
+        val teamId = intent.getIntExtra("teamId", 96)
+        team = JSONUtils.getTeamFromJSON(NetworkUtils.getJSONForTeam(teamId))
+        val teamNameFromJSON = team?.team_name
+
+        val correctName = if (teamNameFromJSON == null || teamNameFromJSON == "null" || teamNameFromJSON.length > 18)
+            intent.getStringExtra("teamName") else team?.team_name
+        teamName?.text = correctName
+
+        coach?.text = team?.coach ?: "Unknown coach..."
+
+        val logoUrl: String? = team?.team_logo
+
+        if (logoUrl?.endsWith("svg") == true) {
+            GlideToVectorYou
+                .init()
+                .with(this)
+                .load(Uri.parse(logoUrl), teamLogo)
+        } else {
+            Picasso.get().load(logoUrl).into(teamLogo)
+        }
+
+        rvMatches?.layoutManager = LinearLayoutManager(this)
+        matches = JSONUtils.getMatchesFromJSON(NetworkUtils.getJSONForH2H(teamId, teamId))
+        rvMatches?.adapter = MatchesAdapter(matches, team, correctName)
+
+        rvPlayers?.layoutManager = LinearLayoutManager(this)
+        rvPlayers?.adapter = PlayersAdapter(team?.players ?: ArrayList())
     }
 
     fun launchMatchActivity(view: View) {
+        val match: Match = matches[rvMatches?.indexOfChild(view) ?: 0]
+
+        val intent = Intent(this, MatchActivity::class.java)
+        intent.putExtra(Match::class.java.simpleName, match)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
