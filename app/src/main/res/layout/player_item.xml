@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/player_photo"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/eredivisie" />
+
+    <TextView
+        android:id="@+id/player_name_and_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minWidth="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/player_position_and_age"
+        app:layout_constraintLeft_toRightOf="@id/player_photo"
+        app:layout_constraintRight_toLeftOf="@id/gl1"
+        tools:text="Abdessamad Ezzalzouli (12)"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:onClick="showToastNameAndNumber"/>
+
+    <TextView
+        android:id="@+id/player_position_and_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/player_name_and_number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/player_photo"
+        app:layout_constraintRight_toLeftOf="@id/gl1"
+        tools:text="Midfielder, 21 y.o."
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:textSize="15dp"
+        android:onClick="showToastPositionAndAge"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/gl1"
+        android:background="@color/white"/>
+
+    <LinearLayout
+        android:id="@+id/ll_matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/gl1"
+        app:layout_constraintRight_toLeftOf="@id/ll_goals"
+        app:layout_constraintBottom_toTopOf="@id/ll_yc"
+        android:orientation="horizontal"
+        android:onClick="showToastMatches">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_sleeves_red_white_football_shirt_svgrepo_com"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/matches"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="M: 7"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_goals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/ll_matches"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ll_rc"
+        android:orientation="horizontal"
+        android:onClick="showToastGoals">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_football_svgrepo_com"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/goals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="G: 7"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_yc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ll_matches"
+        app:layout_constraintLeft_toRightOf="@id/gl1"
+        app:layout_constraintRight_toLeftOf="@id/ll_rc"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:onClick="showToastYellowCards">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_yellow_card"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/yc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            tools:text="YC: 12" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_rc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ll_goals"
+        app:layout_constraintLeft_toRightOf="@id/ll_yc"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:onClick="showToastRedCards">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_red_card"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/rc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="RC: 12"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/white_gray"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
