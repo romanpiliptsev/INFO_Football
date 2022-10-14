@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.infofootball.adapters.TableAdapter
+import com.example.infofootball.adapters.TopScorersAdapter
 import com.example.infofootball.data.TableItem
 import com.example.infofootball.data.TopScorer
 import com.example.infofootball.utils.JSONUtils
@@ -30,12 +32,75 @@ class LeagueActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_league)
 
+        leagueId = intent.getIntExtra("leagueId", 302)
+        tableItems = JSONUtils.getTableItemsFromJSON(NetworkUtils.getJSONForTable(leagueId ?: 0))
+
+        leagueName = findViewById(R.id.league_name)
+        leagueLogo = findViewById(R.id.league_logo)
+        leagueName?.text = when(leagueId) {
+            302 -> {
+                leagueLogo?.setImageResource(R.drawable.laliga)
+                "LA LIGA"
+            }
+            152 -> {
+                leagueLogo?.setImageResource(R.drawable.pl)
+                "PREMIER LEAGUE"
+            }
+            207 -> {
+                leagueLogo?.setImageResource(R.drawable.sa)
+                "SERIE A"
+            }
+            175 -> {
+                leagueLogo?.setImageResource(R.drawable.bl)
+                "BUNDESLIGA"
+            }
+            168 -> {
+                leagueLogo?.setImageResource(R.drawable.l1)
+                "LIGUE 1"
+            }
+            244 -> {
+                leagueLogo?.setImageResource(R.drawable.eredivisie)
+                "EREDEVISIE"
+            }
+            else -> "UNKNOWN LEAGUE"
+        }
+
+        rvTable = findViewById(R.id.rv_table_items)
+        rvTable?.layoutManager = LinearLayoutManager(this)
+        rvTable?.adapter = TableAdapter(tableItems)
+
+        rvTopScorers = findViewById(R.id.rv_top_scorers)
+        rvTopScorers?.layoutManager = LinearLayoutManager(this)
+        topScorers = JSONUtils.getTopScorersFromJSON(NetworkUtils.getJSONForTopScorers(leagueId ?: 0))
+            .sortedBy { it.place }.subList(0, 10)
+
+        rvTopScorers?.adapter = TopScorersAdapter(topScorers)
     }
 
     fun launchTeamActivityFromTable(view: View) {
+        val intent = Intent(this, TeamActivity::class.java)
+        val teamId = convertId(tableItems[rvTable?.indexOfChild(view) ?: 0].id)
+
+        if (teamId == 0) {
+            Toast.makeText(this, "Sorry, team not found...", Toast.LENGTH_SHORT).show()
+        } else {
+            intent.putExtra("teamId", teamId)
+            intent.putExtra("teamName", tableItems[rvTable?.indexOfChild(view) ?: 0].name)
+            startActivity(intent)
+        }
     }
 
     fun launchTeamActivityFromTopScorer(view: View) {
+        val intent = Intent(this, TeamActivity::class.java)
+        val teamId = topScorers[rvTopScorers?.indexOfChild(view.parent as View) ?: 0].teamKey
+
+        if (teamId == 0) {
+            Toast.makeText(this, "Sorry, team not found...", Toast.LENGTH_SHORT).show()
+        } else {
+            intent.putExtra("teamId", teamId)
+            intent.putExtra("teamName", topScorers[rvTopScorers?.indexOfChild(view.parent as View) ?: 0].teamName)
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
