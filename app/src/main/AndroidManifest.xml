@@ -14,10 +14,13 @@
         android:theme="@style/Theme.INFOFootball"
         tools:targetApi="31">
         <activity
-            android:name="com.example.infofootball.LeagueActivity"
+            android:name=".TeamActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.infofootball.MainActivity"
+            android:name=".LeagueActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
